@@ -36,7 +36,7 @@ namespace PA.Plugin.Components.Controls
 
         public void DelayedComposition(IComponent component)
         {
-            if (this._container is CompositionContainer && this.IsInitialized)
+            if (this._container != null && this.IsInitialized)
             {
                 try
                 {
@@ -116,7 +116,7 @@ namespace PA.Plugin.Components.Controls
             {
                 base.Site = value;
 
-                if (value is ISite && Parent == null)
+                if (value != null && Parent == null)
                 {
                     IDesignerHost host = value.GetService(typeof(IDesignerHost)) as IDesignerHost;
                     this.Parent = host != null ? host.RootComponent : null;
@@ -140,7 +140,9 @@ namespace PA.Plugin.Components.Controls
 
         public void EndEdit()
         {
-            if (this.Configuration is IConfigurationSource && this.Configuration.ContainsSetting(Process.GetCurrentProcess().ProcessName + "/Plugins"))
+            this.Configuration.Open();
+
+            if(this.Configuration.ContainsSetting(Process.GetCurrentProcess().ProcessName + "/Plugins"))
             {
                 this.Location = this.Configuration.GetSetting(Process.GetCurrentProcess().ProcessName + "/Plugins");
             }
